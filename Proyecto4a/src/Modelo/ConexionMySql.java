@@ -11,7 +11,7 @@ public class ConexionMySql {
 	private Connection conexion;
 	private String CONTROLADOR_MYSQL="com.mysql.jdbc.Driver";
 	private String server="localhost";
-	private String bbdd="delincuentes";
+	private String bbdd="actividades";
 	private String user="root";
 	private String pass="";
 	private static ConexionMySql instance=null;
