@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ConexionMySql {
-	
+	//Atributos de la clase
 	private Connection conexion;
 	private String CONTROLADOR_MYSQL="com.mysql.jdbc.Driver";
 	private String server="localhost";
@@ -19,26 +19,31 @@ public class ConexionMySql {
 
 	private ConexionMySql(){
 		try {
+			//Carga del controlador JDBC
 			Class.forName(CONTROLADOR_MYSQL).newInstance();
+			//Impreso informativo
 			System.out.println("CARGA CORRECTA DEL CONTROLADOR JDBC");
 		} 
 		catch (Exception errorCargaControlador) {
 			// TODO Auto-generated catch block
 			errorCargaControlador.printStackTrace();
-			System.out.println("ERROR EN LA CARGA DEL CONTROLADOR");
+			System.err.println("ERROR EN LA CARGA DEL CONTROLADOR");
 		}
 		
 		try {
+			//Intento de conexión a la BBDD
 			conexion = DriverManager.getConnection("jdbc:mysql://"+server+"/"+bbdd+"?"+"user="+user+"&password="+pass);
+			//Impreso informativo
 			System.out.println("CONEXION REALIZADA CON EXITO");
 		} 
 		catch (SQLException errorConexionBBDD) {
 			// TODO Auto-generated catch block
 			errorConexionBBDD.printStackTrace();
-			System.out.println("ERROR DE CONEXION CON LA BBDD");
+			System.err.println("ERROR DE CONEXION CON LA BBDD");
 		}
 	}
 	
+	//Método que nos devuelve la instancia de dicha clase
 	public static ConexionMySql getInstance() {
 		if(instance==null) {
 			instance=new ConexionMySql();
@@ -47,7 +52,7 @@ public class ConexionMySql {
 	}
 		
 
-		//SELECTS
+	//Método el cual nos permite realizar consultas (Selects) sobre cualquier tabla de la BBDD
 	public ResultSet query(String query){
 		
 		Statement st;
@@ -60,6 +65,7 @@ public class ConexionMySql {
 			}
 			catch (SQLException e){
 				e.printStackTrace();
+				System.err.println("ERROR AL REALIZAR LA CONSULTA");
 			}
 		
 		}
@@ -71,7 +77,7 @@ public class ConexionMySql {
 										
 	}
 	
-	//INSERTS, UPDATES Y DELETES
+	//Método el cual nos permite realizar INSERTS, UPDATES Y DELETE'S en cualquier tabla de la BBDD
 	public int modifyQuery(String update){
 		Statement stmt;
 		int rs = 0;
@@ -81,7 +87,8 @@ public class ConexionMySql {
 				rs = stmt.executeUpdate(update);
 			}
 			catch (SQLException e){
-				
+				e.printStackTrace();
+				System.err.println("ERROR AL REALIZAR EL INSERT/UPDATE/DELETE");
 			}
 		}
 		catch(SQLException e){
@@ -89,5 +96,4 @@ public class ConexionMySql {
 		}
 		return rs;
 	}
-
 }

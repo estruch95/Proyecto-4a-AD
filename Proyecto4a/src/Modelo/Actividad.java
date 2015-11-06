@@ -1,7 +1,7 @@
 package Modelo;
 
 public class Actividad {
-	
+	//Atributos de la clase
 	private int id;
 	private String asignatura;
 	private String nombre;
@@ -11,8 +11,11 @@ public class Actividad {
 
 	public Actividad() {
 		// TODO Auto-generated constructor stub
+		//Constructor de la clase
 	}
 
+	//GETTERS AND SETTERS de los atributos de la clase
+	
 	public int getId() {
 		return id;
 	}
@@ -64,4 +67,5 @@ public class Actividad {
 	public String toString(){
 		return this.nombre;
 	}
+	
 }
