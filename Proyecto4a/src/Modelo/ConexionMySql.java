@@ -12,12 +12,12 @@ public class ConexionMySql {
 	private String CONTROLADOR_MYSQL="com.mysql.jdbc.Driver";
 	private String server="localhost";
 	private String bbdd="actividades";
-	private String user="root";
+	private String user="rot";
 	private String pass="";
 	private static ConexionMySql instance=null;
 	
 
-	private ConexionMySql(){
+	private ConexionMySql() throws SQLException{
 		try {
 			//Carga del controlador JDBC
 			Class.forName(CONTROLADOR_MYSQL).newInstance();
@@ -40,13 +40,28 @@ public class ConexionMySql {
 			// TODO Auto-generated catch block
 			errorConexionBBDD.printStackTrace();
 			System.err.println("ERROR DE CONEXION CON LA BBDD");
+			
+			if(errorConexionBBDD.getSQLState().equals("28000")){
+				System.out.println("ERROR DE AUTENTIFICACIÓN");
+			}
+			else if(errorConexionBBDD.getSQLState().equals("08S01")){
+				System.out.println("ERROR, SERVIDOR DESCONECTADO");
+			}
+			else{
+				throw errorConexionBBDD;
+			}
 		}
 	}
 	
 	//Método que nos devuelve la instancia de dicha clase
 	public static ConexionMySql getInstance() {
 		if(instance==null) {
-			instance=new ConexionMySql();
+			try {
+				instance=new ConexionMySql();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return instance;
 	}
